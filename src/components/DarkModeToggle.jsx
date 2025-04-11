@@ -1,4 +1,4 @@
-import Switch from "@/components/ui/Switch";
+import { Switch } from "@/components/ui/switch";
 import { useTheme } from "@/context/ThemeContext";
 import { Sun, Moon } from "lucide-react";
 

@@ -1,27 +1,26 @@
 import React from "react";
 
-const Switch = ({ checked, onCheckedChange }) => {
+const Switch = ({ isOn, handleToggle, onLabel = "On", offLabel = "Off" }) => {
   return (
-    <label
-      className="relative inline-flex items-center cursor-pointer"
-      aria-label="Toggle dark mode"
-    >
-      <input
-        type="checkbox"
-        className="sr-only peer"
-        checked={checked}
-        onChange={(e) => {
-          if (typeof onCheckedChange === "function") {
-            onCheckedChange(e.target.checked);
-          } else {
-            console.warn("onCheckedChange is not a function");
-          }
-        }}
-      />
-      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 dark:bg-gray-700 peer-checked:bg-blue-600 rounded-full peer relative transition-colors duration-300">
-        <div className="absolute top-[2px] left-[2px] h-5 w-5 bg-white border border-gray-300 rounded-full transition-transform duration-300 peer-checked:translate-x-full"></div>
-      </div>
-    </label>
+    <div className="flex items-center">
+      <span className="mr-2 text-sm text-gray-600 dark:text-gray-300">
+        {offLabel}
+      </span>
+      <label className="inline-flex items-center cursor-pointer">
+        <input
+          type="checkbox"
+          checked={isOn}
+          onChange={handleToggle}
+          className="sr-only peer"
+        />
+        <div className="w-11 h-6 bg-gray-300 rounded-full relative transition-colors duration-300 peer-checked:bg-blue-600">
+          <div className="absolute top-[2px] left-[2px] bg-white border rounded-full h-5 w-5 transition-all duration-300 peer-checked:translate-x-5" />
+        </div>
+      </label>
+      <span className="ml-2 text-sm text-gray-600 dark:text-gray-300">
+        {onLabel}
+      </span>
+    </div>
   );
 };
 

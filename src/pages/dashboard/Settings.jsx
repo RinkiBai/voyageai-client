@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "../../axios";
 import toast from "react-hot-toast";
+import Switch from "./Switch";
 
 const Settings = () => {
   const [notifications, setNotifications] = useState(true);
   const [language, setLanguage] = useState("en");
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
+    // Load from backend
     const fetchSettings = async () => {
       try {
         const res = await axios.get("/api/users/settings");
@@ -17,6 +20,11 @@ const Settings = () => {
         toast.error("Failed to load settings");
       }
     };
+
+    // Load darkMode from localStorage
+    const storedDarkMode = localStorage.getItem("darkMode");
+    if (storedDarkMode) setDarkMode(storedDarkMode === "true");
+
     fetchSettings();
   }, []);
 
@@ -27,13 +35,22 @@ const Settings = () => {
     } catch (err) {
       toast.error("Failed to save settings");
     }
+
+    // Save darkMode preference locally
+    localStorage.setItem("darkMode", darkMode.toString());
+  };
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    document.documentElement.classList.toggle("dark", !darkMode); // toggle Tailwind dark mode
   };
 
   return (
     <div className="max-w-xl mx-auto mt-10 p-6 bg-white dark:bg-gray-900 rounded-lg shadow">
       <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">User Settings</h2>
 
-      <div className="space-y-4">
+      <div className="space-y-6">
+        {/* Email Notifications Toggle */}
         <div className="flex items-center justify-between">
           <span className="text-gray-700 dark:text-gray-300">Email Notifications</span>
           <label className="inline-flex items-center cursor-pointer">
@@ -47,6 +64,7 @@ const Settings = () => {
           </label>
         </div>
 
+        {/* Language Preference */}
         <div>
           <label className="block text-gray-700 dark:text-gray-300 mb-1">Preferred Language</label>
           <select
@@ -57,8 +75,18 @@ const Settings = () => {
             <option value="en">English</option>
             <option value="hi">Hindi</option>
             <option value="es">Spanish</option>
-            {/* Add more languages as needed */}
           </select>
+        </div>
+
+        {/* Dark Mode Toggle with custom Switch */}
+        <div className="flex items-center justify-between">
+          <span className="text-gray-700 dark:text-gray-300">Dark Mode</span>
+          <Switch
+            isOn={darkMode}
+            handleToggle={toggleDarkMode}
+            onLabel="Dark"
+            offLabel="Light"
+          />
         </div>
 
         <button
