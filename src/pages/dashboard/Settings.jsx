@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../axios";
 import toast from "react-hot-toast";
-import Switch from "./Switch";
+// For Shadcn UI (Radix)
+import { Switch } from "@/components/ui/switch";
+
 
 const Settings = () => {
   const [notifications, setNotifications] = useState(true);
