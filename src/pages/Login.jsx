@@ -1,5 +1,7 @@
+// src/components/Login.jsx
+
 import React, { useState } from "react";
-import axios from "../axios";
+import axios from "../axios";  // Import the custom axios instance
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Eye, EyeOff } from "lucide-react"; // 👁️ Icon for toggling
@@ -19,7 +21,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/users/login", formData);
+      const res = await axios.post("/users/login", formData);  // Use axios instance
 
       localStorage.setItem("token", res.data.user.token);
 

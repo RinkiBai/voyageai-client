@@ -1,13 +1,15 @@
-import axios from "axios";
+import axios from 'axios';
 
+// Set the base URL from the environment variable
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL, // 👈 dynamic baseURL from .env
-  withCredentials: true,
+  baseURL: import.meta.env.VITE_API_BASE_URL, // Dynamic baseURL from .env
+  withCredentials: true,  // Ensure credentials (cookies) are sent with requests
   headers: {
-    "Content-Type": "application/json",
+    "Content-Type": "application/json", // Set content type for requests
   },
 });
 
+// Interceptor to add the token to every request
 instance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -16,9 +18,12 @@ instance.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
+// Interceptor for handling unauthorized responses (401)
 instance.interceptors.response.use(
   (response) => response,
   (error) => {
